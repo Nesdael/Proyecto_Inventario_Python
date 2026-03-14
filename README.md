@@ -8,6 +8,12 @@ El programa está diseñado para **programadores principiantes** que están apre
 
 ---
 
+## Diagrama de flujo
+
+![](images/diagramadeflujo.jpeg)
+
+---
+
 ## Requerimientos
 - Python 3.x
 
