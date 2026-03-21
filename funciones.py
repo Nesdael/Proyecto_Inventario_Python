@@ -15,7 +15,7 @@ def agregar_producto():
         nombre_producto = input("Ingrese el nombre del producto\n")
         
         # Validamos que solo tenga letras
-        if not nombre_producto.replace(" ", "").isalpha():
+        if not nombre_producto.replace(" ", "").isalpha() or len(nombre_producto) == 0:
                 print("Solo se pueden colocar letras")
                 continue # Vuelve a pedir el nombre
             
