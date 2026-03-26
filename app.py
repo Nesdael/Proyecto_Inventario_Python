@@ -2,13 +2,14 @@ from colors import *
 from extras import cargando, deleteScreen, pauseScreen
 from menu import menu
 from services import *
-   
-    
+
+
 # Variable de control para repetir el menú
 continuar = "si" 
 # Ciclo que mantiene el programa en ejecución
 while continuar == "si":
     deleteScreen()  # Limpia la consola
+    print("Presiona la opcion 8 para cargar los productos guardados")
     opcion = menu()
     # Evaluamos la opción elegida
     if opcion == 1:
@@ -36,11 +37,11 @@ while continuar == "si":
         pauseScreen()
     elif opcion == 7:
         deleteScreen()
-     #   guardar_inventario()
+        guardar_inventario()
         pauseScreen()
     elif opcion == 8:
         deleteScreen()
-        
+        cargar_inventario()
         pauseScreen()  
     elif opcion == 9:   
         continuar = salir()

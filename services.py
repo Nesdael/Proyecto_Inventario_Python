@@ -42,8 +42,8 @@ def agregar_producto():
         producto['precio'] = precio
         producto['cantidad'] = cantidad                   
         # Guardamos el producto en la lista inventario        
-        inventario.append(producto)  
-        
+        inventario.append(producto) 
+        guardar_inventario() 
         # Preguntamos si desea seguir agregando productos
         continuar = input("\nDesea seguir agregando productos? (Si/No)\n").lower()
         deleteScreen()
@@ -63,7 +63,7 @@ def mostrar_inventario():
             print(f"producto: {producto['nombre'].capitalize()} | precio: {producto['precio']} | cantidad: {producto['cantidad']}" )
             print()
         return 
-              
+        
 # Función para calcular estadísticas            
 def calcular_estadisticas():
     print(f"{F_VERDE}Haz elegido la opcion calcular estadisticas{RESET}\n")
@@ -136,17 +136,31 @@ def eliminar_producto():
     return
 
 
-# def guardar_inventario():
-#    with open('productos.csv', 'w', newline='', encoding= 'utf-8') as archivo1:
-#        campos =['nombre', 'precio', 'cantidad']
-#    
-#    escritor = csv.DictWriter(archivo1, fieldnames=campos)
-#    escritor.writeheader()
-#    
-#    for producto in inventario:
-#        escritor.writerow(producto)
-#    print('Guardadado')        
-#    return
+
+
+def guardar_inventario():
+    with open("productos.csv", "w", newline="", encoding="utf-8") as archivo:
+        campos = ["nombre", "precio", "cantidad"]
+        escritor = csv.DictWriter(archivo, fieldnames=campos)
+        
+        escritor.writeheader()          # escribe la primera fila: nombre,precio,cantidad
+        escritor.writerows(inventario)
+        return
+    
+    
+def cargar_inventario():
+    try:
+        with open("productos.csv", "r", encoding="utf-8") as archivo: 
+            lector = csv.DictReader(archivo)
+            for fila in lector:
+                inventario.append({
+                    "nombre": fila["nombre"],
+                    "precio": float(fila["precio"]),
+                    "cantidad": int(fila["cantidad"])
+                })
+    except FileNotFoundError:
+        pass
+    return
             
 def salir():
     continuar = "no"
