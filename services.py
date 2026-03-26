@@ -1,6 +1,8 @@
 # Importamos la lista donde se guardan los productos
 from inventario import inventario
 from colors import *
+import csv
+from extras import deleteScreen
 # Función para agregar productos
 def agregar_producto():
     # Variable de control para repetir el menú
@@ -41,8 +43,11 @@ def agregar_producto():
         producto['cantidad'] = cantidad                   
         # Guardamos el producto en la lista inventario        
         inventario.append(producto)  
+        
         # Preguntamos si desea seguir agregando productos
         continuar = input("\nDesea seguir agregando productos? (Si/No)\n").lower()
+        deleteScreen()
+    return producto
     
 # Función para mostrar el inventario        
 def mostrar_inventario():
@@ -55,7 +60,7 @@ def mostrar_inventario():
         print("----INVENTARIO----")    
         # Recorremos la lista de productos
         for producto in inventario:
-            print(f"producto: {producto['nombre']} | precio: {producto['precio']} | cantidad: {producto['cantidad']}" )
+            print(f"producto: {producto['nombre'].capitalize()} | precio: {producto['precio']} | cantidad: {producto['cantidad']}" )
             print()
         return 
               
@@ -72,7 +77,76 @@ def calcular_estadisticas():
     # Mostramos resultados    
     print(f"La cantidad total de productos registrados es: {cantidad_total}\n")
     print(f"El valor total del inventario es: {valortotal}\n")
-    return        
+    return
+
+def buscar_producto():
+    buscar = input('Que producto desea buscar?\n ').strip()
+    
+    print(f"Buscando: '{buscar}'")
+    for producto in inventario:
+        if producto['nombre'] == buscar:
+            print('Producto encontrado')
+            print(f"Nombre: {producto['nombre'].capitalize()}")
+            print(f"precio: {producto['precio']}")
+            print(f"cantidad: {producto['cantidad']}")
+            return
+    print("El producto no se encontro")
+    
+def actualizar_producto():
+    buscar = input("Que producto desea actualizar?\n").lower().strip()
+    
+    for producto in inventario:
+        if producto['nombre'] == buscar:
+            print("Que desea actualizar?")
+            print("1. Valor")
+            print("2. Cantidad")
+            print("3. Nombre")
+            while True:
+                opcion = int(input())
+
+                if opcion == 1:
+                    producto['precio'] = float(input("Ingrese el nuevo precio: \n"))
+                elif opcion == 2:
+                    producto['cantidad'] = int(input("Ingrese la nueva cantidad: \n"))
+                elif opcion == 3:
+                    producto['nombre'] = input("Ingrese el nuevo nombre del producto: \n")
+                else:
+                    print("Ingrese una opcion valida")
+                    continue
+
+                print("Producto actualizado correctamente")
+                return    
+        print("El producto no se encontro")
+    
+    
+    
+def eliminar_producto():
+    for producto in inventario:
+        print("Nombre:", producto['nombre'].capitalize(), "Precio:", producto['precio'], "Cantidad:", producto['cantidad'])
+        
+    nombre_eliminar = input('Que producto desea eliminar?\n')
+    
+    for producto in inventario:
+        if producto['nombre'] == nombre_eliminar:
+            inventario.remove(producto)
+            print('Eliminado exitosamente')
+            
+    for producto in inventario:
+        print("Nombre:", producto['nombre'].capitalize(), "Precio:", producto['precio'], "Cantidad:", producto['cantidad'])   
+    return
+
+
+# def guardar_inventario():
+#    with open('productos.csv', 'w', newline='', encoding= 'utf-8') as archivo1:
+#        campos =['nombre', 'precio', 'cantidad']
+#    
+#    escritor = csv.DictWriter(archivo1, fieldnames=campos)
+#    escritor.writeheader()
+#    
+#    for producto in inventario:
+#        escritor.writerow(producto)
+#    print('Guardadado')        
+#    return
             
 def salir():
     continuar = "no"

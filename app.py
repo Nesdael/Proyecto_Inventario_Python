@@ -22,6 +22,26 @@ while continuar == "si":
         deleteScreen()
         calcular_estadisticas() # Llamamos la función
         pauseScreen()
+    elif opcion == 4:
+        deleteScreen()
+        buscar_producto()
+        pauseScreen()
+    elif opcion == 5:
+        deleteScreen()
+        actualizar_producto()
+        pauseScreen()
+    elif opcion == 6:
+        deleteScreen()
+        eliminar_producto()
+        pauseScreen()
+    elif opcion == 7:
+        deleteScreen()
+     #   guardar_inventario()
+        pauseScreen()
+    elif opcion == 8:
+        deleteScreen()
+        
+        pauseScreen()  
     elif opcion == 9:   
         continuar = salir()
     else:
