@@ -12,10 +12,18 @@ def agregar_producto():
         print(f"{F_VERDE}Haz elegido la opcion agregar producto{RESET}\n")
         # Pedimos nombre del producto
         nombre_producto = input("Ingrese el nombre del producto\n")
+        existe = False
         # Validamos que solo tenga letras
         if not nombre_producto.replace(" ", "").isalpha() or len(nombre_producto) == 0:
                 print("Solo se pueden colocar letras")
                 continue # Vuelve a pedir el nombre  
+        for i in inventario:
+            if i['nombre'] == nombre_producto:
+                existe = True
+                break     
+        if existe:
+            print('Este producto ya esta en el inventario')
+            continue  
         # Validación del precio    
         while True:
             try:
@@ -40,10 +48,11 @@ def agregar_producto():
         producto = {}   
         producto['nombre'] = nombre_producto
         producto['precio'] = precio
-        producto['cantidad'] = cantidad                   
+        producto['cantidad'] = cantidad                  
         # Guardamos el producto en la lista inventario        
-        inventario.append(producto) 
-        guardar_inventario() 
+        inventario.append(producto)
+        
+        
         # Preguntamos si desea seguir agregando productos
         continuar = input("\nDesea seguir agregando productos? (Si/No)\n").lower()
         deleteScreen()
@@ -153,11 +162,20 @@ def cargar_inventario():
         with open("productos.csv", "r", encoding="utf-8") as archivo: 
             lector = csv.DictReader(archivo)
             for fila in lector:
-                inventario.append({
-                    "nombre": fila["nombre"],
-                    "precio": float(fila["precio"]),
-                    "cantidad": int(fila["cantidad"])
-                })
+                nombre = fila['nombre']
+                precio= float(fila["precio"])
+                cantidad= int(fila["cantidad"])
+                existe = False
+                for i in inventario:
+                    if i['nombre'].lower() == nombre.lower():
+                        existe = True
+                        return
+                if not existe:
+                    inventario.append({
+                        "nombre": nombre,
+                        "precio": precio,
+                        "cantidad": cantidad
+                    })
     except FileNotFoundError:
         pass
     return
