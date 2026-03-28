@@ -2,9 +2,10 @@
 from inventario import inventario
 from colors import *
 import csv
-from extras import deleteScreen
+from extras import deleteScreen, pauseScreen
+
 # Función para agregar productos
-def agregar_producto():
+def agregar_producto(inventario):
     # Variable de control para repetir el menú
     continuar = "si"
     # Ciclo para agregar varios productos
@@ -59,11 +60,12 @@ def agregar_producto():
     return producto
     
 # Función para mostrar el inventario        
-def mostrar_inventario():
+def mostrar_inventario(inventario):
     print(f"{F_VERDE}Haz elegido la opcion mostrar producto{RESET}\n")
     # Si el inventario está vacío
     if len(inventario) == 0:
         print("Aun no hay nada ")
+        pauseScreen()
         return
     else:
         print("----INVENTARIO----")    
@@ -71,10 +73,11 @@ def mostrar_inventario():
         for producto in inventario:
             print(f"producto: {producto['nombre'].capitalize()} | precio: {producto['precio']} | cantidad: {producto['cantidad']}" )
             print()
+        pauseScreen()
         return 
         
 # Función para calcular estadísticas            
-def calcular_estadisticas():
+def calcular_estadisticas(inventario):
     print(f"{F_VERDE}Haz elegido la opcion calcular estadisticas{RESET}\n")
     print(inventario)
     cantidad_total = 0 # Total de productos
@@ -86,9 +89,10 @@ def calcular_estadisticas():
     # Mostramos resultados    
     print(f"La cantidad total de productos registrados es: {cantidad_total}\n")
     print(f"El valor total del inventario es: {valortotal}\n")
+    pauseScreen()
     return
 
-def buscar_producto():
+def buscar_producto(inventario):
     buscar = input('Que producto desea buscar?\n ').strip()
     
     print(f"Buscando: '{buscar}'")
@@ -101,7 +105,7 @@ def buscar_producto():
             return
     print("El producto no se encontro")
     
-def actualizar_producto():
+def actualizar_producto(inventario):
     buscar = input("Que producto desea actualizar?\n").lower().strip()
     
     for producto in inventario:
@@ -129,7 +133,7 @@ def actualizar_producto():
     
     
     
-def eliminar_producto():
+def eliminar_producto(inventario):
     for producto in inventario:
         print("Nombre:", producto['nombre'].capitalize(), "Precio:", producto['precio'], "Cantidad:", producto['cantidad'])
         
@@ -145,9 +149,7 @@ def eliminar_producto():
     return
 
 
-
-
-def guardar_inventario():
+def guardar_inventario(inventario):
     with open("productos.csv", "w", newline="", encoding="utf-8") as archivo:
         campos = ["nombre", "precio", "cantidad"]
         escritor = csv.DictWriter(archivo, fieldnames=campos)
@@ -156,8 +158,7 @@ def guardar_inventario():
         escritor.writerows(inventario)
         return
     
-    
-def cargar_inventario():
+def cargar_inventario(inventario):
     try:
         with open("productos.csv", "r", encoding="utf-8") as archivo: 
             lector = csv.DictReader(archivo)

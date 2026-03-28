@@ -3,7 +3,16 @@ from extras import cargando, deleteScreen, pauseScreen
 from menu import menu
 from services import *
 
-
+funciones = {
+    "1": agregar_producto,
+    "2": mostrar_inventario,
+    "3": calcular_estadisticas,
+    "4": buscar_producto,
+    "5": actualizar_producto,
+    "6": eliminar_producto,
+    "7": guardar_inventario,
+    "8": cargar_inventario,
+}
 # Variable de control para repetir el menú
 continuar = "si" 
 # Ciclo que mantiene el programa en ejecución
@@ -12,38 +21,9 @@ while continuar == "si":
     print("Presiona la opcion 8 para cargar los productos guardados")
     opcion = menu()
     # Evaluamos la opción elegida
-    if opcion == 1:
-        deleteScreen()
-        agregar_producto() # Llamamos la función
-    elif opcion == 2:
-        deleteScreen()
-        mostrar_inventario() # Llamamos la función
-        pauseScreen()
-    elif opcion == 3:
-        deleteScreen()
-        calcular_estadisticas() # Llamamos la función
-        pauseScreen()
-    elif opcion == 4:
-        deleteScreen()
-        buscar_producto()
-        pauseScreen()
-    elif opcion == 5:
-        deleteScreen()
-        actualizar_producto()
-        pauseScreen()
-    elif opcion == 6:
-        deleteScreen()
-        eliminar_producto()
-        pauseScreen()
-    elif opcion == 7:
-        deleteScreen()
-        guardar_inventario()
-        pauseScreen()
-    elif opcion == 8:
-        deleteScreen()
-        cargar_inventario()
-        pauseScreen()  
-    elif opcion == 9:   
+    if opcion in funciones:
+        funciones[opcion](inventario)
+    elif opcion == "9":   
         continuar = salir()
     else:
         print("Ingrese una opcion valida")

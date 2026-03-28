@@ -14,10 +14,8 @@ def menu():
     print("9. Salir")
 
     # Pedimos al usuario una opción
-    try:
-        opcion = int(input("Que opcion desea realizar?\n"))
-    except ValueError:
-        print("Error: Ingrese solo numeros")
-        input("Presione una tecla...") 
+
+    opcion = input("Que opcion desea realizar?\n")
+    
     return opcion
     
