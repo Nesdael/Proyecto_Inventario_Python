@@ -1,11 +1,15 @@
 # Importamos la lista donde se guardan los productos
 from inventario import inventario
 from colors import *
-import csv
 from extras import deleteScreen, pauseScreen
 
 # Función para agregar productos
 def agregar_producto(inventario):
+    """
+    Agrega un nuevo producto al inventario.
+    Parámetros: lista de diccionarios donde se guardan los productos
+    Retorno: None   
+    """
     # Variable de control para repetir el menú
     continuar = "si"
     # Ciclo para agregar varios productos
@@ -52,15 +56,18 @@ def agregar_producto(inventario):
         producto['cantidad'] = cantidad                  
         # Guardamos el producto en la lista inventario        
         inventario.append(producto)
-        
-        
         # Preguntamos si desea seguir agregando productos
         continuar = input("\nDesea seguir agregando productos? (Si/No)\n").lower()
         deleteScreen()
-    return producto
+    return
     
 # Función para mostrar el inventario        
 def mostrar_inventario(inventario):
+    """
+    Muestra todos los productos del inventario en consola.
+    Parámetros: lista de diccionarios donde se guardan los productos
+    Retorno: None  
+    """
     print(f"{F_VERDE}Haz elegido la opcion mostrar producto{RESET}\n")
     # Si el inventario está vacío
     if len(inventario) == 0:
@@ -78,26 +85,57 @@ def mostrar_inventario(inventario):
         
 # Función para calcular estadísticas            
 def calcular_estadisticas(inventario):
-    print(f"{F_VERDE}Haz elegido la opcion calcular estadisticas{RESET}\n")
-    print(inventario)
-    cantidad_total = 0 # Total de productos
-    valortotal = 0 # Valor total del inventario
-    # Recorremos el inventario
+    """
+    Calcula y muestra estadísticas del inventario.
+    Parámetros: lista de diccionarios donde se guardan los productos
+    Retorno: None
+    """
+    if len(inventario) == 0:
+        print("El inventario está vacío")
+        pauseScreen()
+        return
+
+    cantidad_total = 0
+    valortotal = 0
+    producto_mas_caro = inventario[0]      # empieza con el primero
+    producto_mayor_stock = inventario[0]   # empieza con el primero
+
     for producto in inventario:
         cantidad_total += producto['cantidad']
         valortotal += producto['precio'] * producto['cantidad']
-    # Mostramos resultados    
-    print(f"La cantidad total de productos registrados es: {cantidad_total}\n")
-    print(f"El valor total del inventario es: {valortotal}\n")
+
+        # Si el precio actual es mayor al guardado, lo reemplaza
+        if producto['precio'] > producto_mas_caro['precio']:
+            producto_mas_caro = producto
+
+        # Si la cantidad actual es mayor a la guardada, la reemplaza
+        if producto['cantidad'] > producto_mayor_stock['cantidad']:
+            producto_mayor_stock = producto
+
+    # Lambda para subtotal de cada producto
+    subtotal = lambda p: p["precio"] * p["cantidad"]
+
+    print(f"Unidades totales: {cantidad_total}")
+    print(f"Valor total: {valortotal}")
+    print(f"Producto mas caro: {producto_mas_caro['nombre']} - ${producto_mas_caro['precio']}")
+    print(f"Producto mayor stock: {producto_mayor_stock['nombre']} - {producto_mayor_stock['cantidad']} unidades")
+    print("\nSubtotales:")
+    for producto in inventario:
+        print(f"  {producto['nombre']}: ${subtotal(producto)}")
+
     pauseScreen()
-    return
 
 def buscar_producto(inventario):
+    """
+    Busca un producto por nombre y muestra sus datos.
+    Parámetros: lista de diccionarios donde se guardan los productos
+    Retorno: None
+    """
     buscar = input('Que producto desea buscar?\n ').strip()
     
     print(f"Buscando: '{buscar}'")
     for producto in inventario:
-        if producto['nombre'] == buscar:
+        if producto['nombre'] == buscar.capitalize():
             print('Producto encontrado')
             print(f"Nombre: {producto['nombre'].capitalize()}")
             print(f"precio: {producto['precio']}")
@@ -106,10 +144,15 @@ def buscar_producto(inventario):
     print("El producto no se encontro")
     
 def actualizar_producto(inventario):
+    """
+    Actualiza precio, cantidad o nombre de un producto existente.
+    Parámetros: lista de diccionarios donde se guardan los productos
+    Retorno: None
+    """
     buscar = input("Que producto desea actualizar?\n").lower().strip()
     
     for producto in inventario:
-        if producto['nombre'] == buscar:
+        if producto['nombre'] == buscar.capitalize():
             print("Que desea actualizar?")
             print("1. Valor")
             print("2. Cantidad")
@@ -129,11 +172,16 @@ def actualizar_producto(inventario):
 
                 print("Producto actualizado correctamente")
                 return    
-        print("El producto no se encontro")
+    print("El producto no se encontro")
     
     
     
 def eliminar_producto(inventario):
+    """
+    Elimina un producto del inventario por nombre.
+    Parámetros: lista de diccionarios donde se guardan los productos
+    Retorno: None
+    """
     for producto in inventario:
         print("Nombre:", producto['nombre'].capitalize(), "Precio:", producto['precio'], "Cantidad:", producto['cantidad'])
         
@@ -149,39 +197,12 @@ def eliminar_producto(inventario):
     return
 
 
-def guardar_inventario(inventario):
-    with open("productos.csv", "w", newline="", encoding="utf-8") as archivo:
-        campos = ["nombre", "precio", "cantidad"]
-        escritor = csv.DictWriter(archivo, fieldnames=campos)
-        
-        escritor.writeheader()          # escribe la primera fila: nombre,precio,cantidad
-        escritor.writerows(inventario)
-        return
-    
-def cargar_inventario(inventario):
-    try:
-        with open("productos.csv", "r", encoding="utf-8") as archivo: 
-            lector = csv.DictReader(archivo)
-            for fila in lector:
-                nombre = fila['nombre']
-                precio= float(fila["precio"])
-                cantidad= int(fila["cantidad"])
-                existe = False
-                for i in inventario:
-                    if i['nombre'].lower() == nombre.lower():
-                        existe = True
-                        return
-                if not existe:
-                    inventario.append({
-                        "nombre": nombre,
-                        "precio": precio,
-                        "cantidad": cantidad
-                    })
-    except FileNotFoundError:
-        pass
-    return
-            
 def salir():
+    """
+    Termina el programa.
+    Parámetros: ninguno
+    Retorno: contnuar = "no" es para poder terminar el programa
+    """
     continuar = "no"
     print("Has salido del menu de inventario, vuelva pronto")
     return continuar

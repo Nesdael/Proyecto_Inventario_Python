@@ -12,10 +12,3 @@ def menu():
     print("7. Guardar CSV")
     print("8. Cargar CSV")
     print("9. Salir")
-
-    # Pedimos al usuario una opción
-
-    opcion = input("Que opcion desea realizar?\n")
-    
-    return opcion
-    

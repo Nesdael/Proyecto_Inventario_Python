@@ -1,6 +1,7 @@
 from colors import *
 from extras import cargando, deleteScreen, pauseScreen
 from menu import menu
+from archivos import *
 from services import *
 
 funciones = {
@@ -17,9 +18,11 @@ funciones = {
 continuar = "si" 
 # Ciclo que mantiene el programa en ejecución
 while continuar == "si":
+    
     deleteScreen()  # Limpia la consola
     print("Presiona la opcion 8 para cargar los productos guardados")
-    opcion = menu()
+    menu()
+    opcion = input("Que opcion desea realizar?\n")
     # Evaluamos la opción elegida
     if opcion in funciones:
         funciones[opcion](inventario)
