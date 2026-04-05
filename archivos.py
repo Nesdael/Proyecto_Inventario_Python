@@ -1,4 +1,5 @@
 from inventario import inventario
+from extras import *
 import csv
 
 def guardar_inventario(inventario):
@@ -7,12 +8,14 @@ def guardar_inventario(inventario):
     Parámetros: lista de diccionarios donde se guardan los productos
     Retorno: None
     """
+    deleteScreen()
     with open("productos.csv", "w", newline="", encoding="utf-8") as archivo:
         campos = ["nombre", "precio", "cantidad"]
-        escritor = csv.DictWriter(archivo, fieldnames=campos)
-        
+        escritor = csv.DictWriter(archivo, fieldnames=campos)  
         escritor.writeheader()          # escribe la primera fila: nombre,precio,cantidad
         escritor.writerows(inventario)
+        print("Guardado")
+        pauseScreen()
         return
     
 def cargar_inventario(inventario):
@@ -21,6 +24,7 @@ def cargar_inventario(inventario):
     Parámetros: lista de diccionarios donde se guardan los productos
     pass significa "si ocurre este error, no hagas nada y sigue".
     """
+    deleteScreen()
     try:
         with open("productos.csv", "r", encoding="utf-8") as archivo: 
             lector = csv.DictReader(archivo)
@@ -39,5 +43,7 @@ def cargar_inventario(inventario):
                         "precio": precio,
                         "cantidad": cantidad
                     })
+            print(f"Productos cargados: {len(inventario)}")
+            pauseScreen()
     except FileNotFoundError:
         pass

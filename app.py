@@ -1,5 +1,5 @@
 from colors import *
-from extras import cargando, deleteScreen, pauseScreen
+from extras import deleteScreen, pauseScreen
 from menu import menu
 from archivos import *
 from services import *
@@ -33,4 +33,10 @@ while continuar == "si":
         pauseScreen()
         continue    # Vuelve al inicio del menú
     # Mensaje final al salir del ciclo
-print("\nGracias por utilizarlo, hasta luego")         
+print("\nGracias por utilizarlo, hasta luego")
+
+# Sistema de gestión de inventario desarrollado en Python.
+# Permite agregar, buscar, actualizar, eliminar productos y calcular estadísticas.
+# Los datos se persisten en un archivo CSV para conservarlos entre sesiones.
+# Arquitectura modular: services.py (lógica), archivos.py (persistencia),
+# extras.py (utilidades), colors.py (colores), menu.py (interfaz).

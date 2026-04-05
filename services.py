@@ -14,6 +14,7 @@ def agregar_producto(inventario):
     continuar = "si"
     # Ciclo para agregar varios productos
     while continuar == "si":
+        deleteScreen()  # Limpia la consola
         print(f"{F_VERDE}Haz elegido la opcion agregar producto{RESET}\n")
         # Pedimos nombre del producto
         nombre_producto = input("Ingrese el nombre del producto\n")
@@ -68,6 +69,7 @@ def mostrar_inventario(inventario):
     Parámetros: lista de diccionarios donde se guardan los productos
     Retorno: None  
     """
+    deleteScreen()  # Limpia la consola
     print(f"{F_VERDE}Haz elegido la opcion mostrar producto{RESET}\n")
     # Si el inventario está vacío
     if len(inventario) == 0:
@@ -90,6 +92,7 @@ def calcular_estadisticas(inventario):
     Parámetros: lista de diccionarios donde se guardan los productos
     Retorno: None
     """
+    deleteScreen()  # Limpia la consola
     if len(inventario) == 0:
         print("El inventario está vacío")
         pauseScreen()
@@ -131,17 +134,20 @@ def buscar_producto(inventario):
     Parámetros: lista de diccionarios donde se guardan los productos
     Retorno: None
     """
-    buscar = input('Que producto desea buscar?\n ').strip()
+    deleteScreen()
+    buscar = input('Que producto desea buscar?\n').strip().lower()  # solo .lower()
     
-    print(f"Buscando: '{buscar}'")
     for producto in inventario:
-        if producto['nombre'] == buscar.capitalize():
+        if producto['nombre'].lower() == buscar:  # compara en minúsculas
             print('Producto encontrado')
             print(f"Nombre: {producto['nombre'].capitalize()}")
-            print(f"precio: {producto['precio']}")
-            print(f"cantidad: {producto['cantidad']}")
+            print(f"Precio: {producto['precio']}")
+            print(f"Cantidad: {producto['cantidad']}")
+            pauseScreen()
             return
     print("El producto no se encontro")
+    pauseScreen()
+    
     
 def actualizar_producto(inventario):
     """
@@ -149,10 +155,11 @@ def actualizar_producto(inventario):
     Parámetros: lista de diccionarios donde se guardan los productos
     Retorno: None
     """
+    deleteScreen()  # Limpia la consola
     buscar = input("Que producto desea actualizar?\n").lower().strip()
     
     for producto in inventario:
-        if producto['nombre'] == buscar.capitalize():
+        if producto['nombre'].lower() == buscar:
             print("Que desea actualizar?")
             print("1. Valor")
             print("2. Cantidad")
@@ -169,11 +176,12 @@ def actualizar_producto(inventario):
                 else:
                     print("Ingrese una opcion valida")
                     continue
-
                 print("Producto actualizado correctamente")
+                print(f"Nombre: {producto['nombre']} | Precio: {producto['precio']} | Cantidad: {producto['cantidad']}")
+                pauseScreen()
                 return    
     print("El producto no se encontro")
-    
+    pauseScreen()
     
     
 def eliminar_producto(inventario):
@@ -182,6 +190,7 @@ def eliminar_producto(inventario):
     Parámetros: lista de diccionarios donde se guardan los productos
     Retorno: None
     """
+    deleteScreen()  # Limpia la consola
     for producto in inventario:
         print("Nombre:", producto['nombre'].capitalize(), "Precio:", producto['precio'], "Cantidad:", producto['cantidad'])
         
@@ -191,9 +200,11 @@ def eliminar_producto(inventario):
         if producto['nombre'] == nombre_eliminar:
             inventario.remove(producto)
             print('Eliminado exitosamente')
+    pauseScreen()
             
     for producto in inventario:
-        print("Nombre:", producto['nombre'].capitalize(), "Precio:", producto['precio'], "Cantidad:", producto['cantidad'])   
+        print("Nombre:", producto['nombre'].capitalize(), "Precio:", producto['precio'], "Cantidad:", producto['cantidad'])
+    pauseScreen()
     return
 
 
@@ -203,6 +214,7 @@ def salir():
     Parámetros: ninguno
     Retorno: contnuar = "no" es para poder terminar el programa
     """
+    deleteScreen()  # Limpia la consola
     continuar = "no"
     print("Has salido del menu de inventario, vuelva pronto")
     return continuar
